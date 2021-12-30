@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/brush_size_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="small image"
+            android:src="@drawable/ic_brush_size_minus"
+            app:layout_constraintBottom_toTopOf="@+id/brush_size_plus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/brush_size_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="large image"
+            android:src="@drawable/ic_brush_size_plus"
+            app:layout_constraintBottom_toTopOf="@id/brush_size_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/brush_size_minus" />
+
+        <ImageButton
+            android:id="@+id/brush_size_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="large image"
+            android:src="@drawable/ic_brush_size_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/brush_size_plus" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
