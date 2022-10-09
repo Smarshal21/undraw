@@ -3,6 +3,7 @@ package com.rihsi.dyno.undraw
 import android.Manifest
 import android.app.Dialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -37,7 +38,8 @@ class MainActivity : AppCompatActivity() {
     private var mImageButtonCurrentPaint: ImageButton? = null
 
     private lateinit var binding: ActivityMainBinding
-
+    var curentImageUri : Uri? = null
+    var checkForShare=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.ibSave.setOnClickListener {
+            checkForShare=0
             requestWriteStoragePermission()
             if(isReadStorageAllowed()){
                 lifecycleScope.launch {
@@ -68,6 +71,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+            binding.ibShare.setOnClickListener{
+            checkForShare=1
+            requestWriteStoragePermission()
+            if(isReadStorageAllowed()){
+                lifecycleScope.launch {
+                    val flDrawingView: FrameLayout = binding.flDrawingViewContainer
+                    saveMediaToStorage(getBitmapFromView(flDrawingView))
+                }
+            }
+        }
+
     }
 
     private fun requestWriteStoragePermission() {
@@ -180,7 +194,9 @@ private fun saveMediaToStorage(bitmap: Bitmap){
                 put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
             }
             val imageUri: Uri? = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-            fos = imageUri?.let { resolver.openOutputStream(it)}
+            fos = imageUri?.let { resolver.openOutputStream(it) }
+            curentImageUri = imageUri
+
         }
     }
     else {
@@ -191,7 +207,20 @@ private fun saveMediaToStorage(bitmap: Bitmap){
 
     fos?.use {
         bitmap.compress(Bitmap.CompressFormat.PNG,90,it)
-        Toast.makeText(this, "Saved To Gallery" , Toast.LENGTH_SHORT).show()
+        if(checkForShare==0){
+            Toast.makeText(this, "Saved To Gallery" , Toast.LENGTH_SHORT).show()
+        }
+        else{
+            shareImage(curentImageUri)
+        }
     }
 }
+    private fun shareImage(result:Uri?){
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.putExtra(Intent.EXTRA_STREAM, result)
+            shareIntent.type = "image/png"
+            startActivity(Intent.createChooser(shareIntent, "Share"))
+        }
 }
+
