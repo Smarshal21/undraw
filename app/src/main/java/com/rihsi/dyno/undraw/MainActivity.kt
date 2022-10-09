@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
         var brushSizeBinding = DialogBrushSizeBinding.inflate(layoutInflater)
         brushDialog.setContentView(brushSizeBinding.root)
         brushDialog.setTitle("Brush Size: ")
-        brushSizeBinding.slidermo.addOnChangeListener { slider, value, fromUser ->
+        brushSizeBinding.brush_size_slider.addOnChangeListener { slider, value, fromUser ->
             binding.drawingView.setSizeForBrush(slider.value)
         }
         brushDialog.show()
